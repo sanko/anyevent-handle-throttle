@@ -1,0 +1,7 @@
+Build.PL
+Changes
+lib/AnyEvent/Handle/Throttle.pm
+MANIFEST			This list of files
+META.yml
+README
+t/http.t
