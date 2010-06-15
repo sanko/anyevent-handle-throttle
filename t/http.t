@@ -13,7 +13,6 @@ $handle = new_ok(
     'AnyEvent::Handle::Throttle',
     [upload_rate   => 2,
      download_rate => 1024,
-     _period       => 1.5,
      connect       => ['cpan.org', 'http'],
      on_prepare    => sub {15},
      on_connect    => sub { $prev = AE::now; },
