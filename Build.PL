@@ -19,21 +19,19 @@ my $mb = $class->new(
     license     => 'artistic_2',
     dist_author => 'Sanko Robinson <sanko@cpan.org>',
     requires    => {
-                 'AnyEvent'           => 0,
-                 'Archive::Extract'   => 0,
-                 'File::Find' => 0,
-                 'Module::Build'      => 0.36,
-                 parent               => 0,
-                 perl                 => 5.008000,
-                 'Test::More'         => 0.88
+                 'AnyEvent'      => 0,
+                 'File::Find'    => 0,
+                 'Module::Build' => 0.36,
+                 parent          => 0,
+                 perl            => 5.008000,
+                 'Test::More'    => 0.88
     },
-    build_requires => {'AnyEvent'           => 0,
-                 'Archive::Extract'   => 0,
-                 'File::Find' => 0,
-                 'Module::Build'      => 0.36,
-                 parent               => 0,
-                 perl                 => 5.008000,
-                 'Test::More'         => 0.88
+    build_requires => {'AnyEvent'      => 0,
+                       'File::Find'    => 0,
+                       'Module::Build' => 0.36,
+                       parent          => 0,
+                       perl            => 5.008000,
+                       'Test::More'    => 0.88
     },
     add_to_cleanup => [
                qw[AnyEvent-Handle-Throttle-*],
@@ -72,12 +70,14 @@ sub okay_tcp4 {
     system(qq["$^X" t/90000_data/94000_scripts/94004_TCP4_loopback.pl]);
     return $? ? 0 : 1;
 }
+
 sub find_cb {
     return if -d $_ or -l $_;
     return unless -T $_;
     return unless $_ =~ m[.+\.t$];
     return push @tests, $File::Find::name;
 }
+
 =pod
 
 =head1 Author
