@@ -42,7 +42,7 @@ $handle = new_ok(
          ok length $handle->rbuf <= $handle->download_rate,
              sprintf 'Chunk %d was %d bytes long...', ++$chunks,
              length $handle->rbuf;
-         ok $now >= $prev + $handle->{_period},
+         ok $now <= $prev + ($handle->{_period} * 2),
              sprintf ' ...and came %f seconds later', $now - $prev
              if $chunks > 1;
          $handle->rbuf() = '';
