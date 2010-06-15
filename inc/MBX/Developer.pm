@@ -4,6 +4,15 @@ package inc::MBX::Developer;
     use warnings;
     use base 'Module::Build';
 
+    sub make_tarball {
+        my ($self, $dir, $file, $quiet) = @_;
+        $file ||= $dir;
+        $self->do_system(
+            'tar --mode=0755 -c' . ($quiet ? q[] : 'v') . "f $file.tar $dir");
+        $self->do_system("gzip -9 -f -n $file.tar");
+        return 1;
+    }
+
     sub ACTION_distdir {
         my ($self, $args) = @_;
         if ($self->notes('do_rcs')) {
