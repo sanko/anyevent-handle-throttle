@@ -6,7 +6,7 @@ package AnyEvent::Handle::Throttle;
     use Errno qw[EAGAIN EINTR];
     use AnyEvent::Util qw[WSAEWOULDBLOCK];
     use parent 'AnyEvent::Handle';
-    our $MAJOR = 0.00; our $MINOR = 1; our $DEV = 0; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
+    our $MAJOR = 0.00; our $MINOR = 2; our $DEV = 0; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
 
     sub upload_rate {
         $_[1] ? $_[0]->{upload_rate} = $_[1] : $_[0]->{upload_rate};
@@ -237,9 +237,9 @@ upload limit. This may change in the future.
 
 =head1 Bugs
 
-I'm sure this module is just burting with 'em. When you stumble upon on,
+I'm sure this module is just burting with 'em. When you stumble upon one,
 please report it via the
-L<Issue Tracker|http://github.com/sanko/anyevent-handle-bandwidth/issues>.
+L<Issue Tracker|http://github.com/sanko/anyevent-handle-throttle/issues>.
 
 =head1 Author
 

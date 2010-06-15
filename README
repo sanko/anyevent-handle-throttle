@@ -77,9 +77,9 @@ Notes
         defined upload limit. This may change in the future.
 
 Bugs
-    I'm sure this module is just burting with 'em. When you stumble upon on,
+    I'm sure this module is just burting with 'em. When you stumble upon one,
     please report it via the Issue Tracker
-    <http://github.com/sanko/anyevent-handle-bandwidth/issues>.
+    <http://github.com/sanko/anyevent-handle-throttle/issues>.
 
 Author
     Sanko Robinson <sanko@cpan.org> - http://sankorobinson.com/
