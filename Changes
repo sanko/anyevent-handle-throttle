@@ -1,4 +1,10 @@
-Version 0.000002 | 2010-06-15 04:32:48Z (Tue, 15 Jun 2010) | b790c7d
+Version 0.000002001 | 2010-06-17 01:36:39Z (Thu, 17 Jun 2010) | 4557fab
+
+     Resolved Issues/Bug Fixes:
+     * Instead of allowing unlimited transfer, an undefined download_rate
+       disabled download
+
+Version 0.000002 | 2010-06-15 04:33:43Z (Tue, 15 Jun 2010) | 4656007
 
     Documentation/Sample Code/Test Suite:
      * Spellcheck, ftw

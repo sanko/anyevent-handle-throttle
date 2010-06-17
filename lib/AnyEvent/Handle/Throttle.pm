@@ -6,7 +6,7 @@ package AnyEvent::Handle::Throttle;
     use Errno qw[EAGAIN EINTR];
     use AnyEvent::Util qw[WSAEWOULDBLOCK];
     use parent 'AnyEvent::Handle';
-    our $MAJOR = 0.00; our $MINOR = 2; our $DEV = 0; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
+    our $MAJOR = 0.00; our $MINOR = 2; our $DEV = -1; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
 
     sub upload_rate {
         $_[1] ? $_[0]->{upload_rate} = $_[1] : $_[0]->{upload_rate};
@@ -40,10 +40,10 @@ package AnyEvent::Handle::Throttle;
             $self->{_rw} = AE::io $self->{fh}, 0, sub {
                 my $_read
                     = defined $self->{download_rate}
-                    && defined $self->{read_size}
-                    ? $self->{read_size}
-                    : $self->{rbuf_max};
-                if (!$_read) {
+                    && defined $self->{read_size} ? $self->{read_size}
+                    : defined $self->{rbuf_max}   ? $self->{rbuf_max}
+                    :                               ();
+                if (defined $_read && $_read == 0) {
                     $self->stop_read;
                     return $self->{_pause_read} = AE::timer(
                         0.5, 0,
@@ -55,7 +55,8 @@ package AnyEvent::Handle::Throttle;
                 }
                 my $rbuf = \($self->{tls} ? my $buf : $self->{rbuf});
                 $$rbuf ||= '';
-                my $len = sysread $self->{fh}, $$rbuf, $_read, length $$rbuf;
+                my $len = sysread $self->{fh}, $$rbuf, $_read || 8192,
+                    length $$rbuf;
                 if ($len > 0) {
                     $self->{read_size} -= $len;
                     $self->{_download_period} += $len;
