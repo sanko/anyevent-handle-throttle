@@ -8,12 +8,12 @@ package AnyEvent::Handle::Throttle;
     use parent 'AnyEvent::Handle';
     our $MAJOR = 0.00; our $MINOR = 2; our $DEV = -1; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
 
-    sub upload_rate {
-        $_[1] ? $_[0]->{upload_rate} = $_[1] : $_[0]->{upload_rate};
+    sub upload_limit {
+        $_[1] ? $_[0]->{upload_limit} = $_[1] : $_[0]->{upload_limit};
     }
 
-    sub download_rate {
-        $_[1] ? $_[0]->{download_rate} = $_[1] : $_[0]->{download_rate};
+    sub download_limit {
+        $_[1] ? $_[0]->{download_limit} = $_[1] : $_[0]->{download_limit};
     }
     sub upload_period   { $_[0]->{upload_period} }
     sub download_period { $_[0]->{download_period} }
@@ -144,8 +144,8 @@ AnyEvent::Handle::Throttle - AnyEvent::Handle subclass with user-defined up/down
     my $condvar = AnyEvent->condvar;
     my $handle;
     $handle = AnyEvent::Handle::Throttle->new(
-        upload_rate   => 2,  # Very...
-        download_rate => 50, # ...slow
+        upload_limit   => 2,  # Very...
+        download_limit => 50, # ...slow
         connect  => ['google.com', 'http'],
         on_error => sub {
             warn "error $_[2]\n";
@@ -189,25 +189,25 @@ constructor supports these arguments (all as C<< key => value >> pairs).
 
 =over
 
-=item upload_rate => <bytes>
+=item upload_limit => <bytes>
 
 This is the maximum amount of data (in bytes) writen to the filehandle per
-period. If C<upload_rate> is not specified, the upload rate is not limited.
+period. If C<upload_limit> is not specified, the upload rate is not limited.
 
 Note that this value can/will override C<read_size>.
 
-=item download_rate => <bytes>
+=item download_limit => <bytes>
 
 This is the maximum amount of data (in bytes) read from the filehandle per
-period. If C<download_rate> is not specified, the upload rate is not limited.
+period. If C<download_limit> is not specified, the upload rate is not limited.
 
 =back
 
-=item $handle->B<upload_rate>( $bytes )
+=item $handle->B<upload_limit>( $bytes )
 
 Sets/returns the current upload rate in bytes per period.
 
-=item $handle->B<download_rate>( $bytes )
+=item $handle->B<download_limit>( $bytes )
 
 Sets/returns the current download rate in bytes per period.
 
