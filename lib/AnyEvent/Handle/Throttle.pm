@@ -221,7 +221,7 @@ constructor supports these arguments (all as C<< key => value >> pairs).
 
 =item upload_limit => <bytes>
 
-This is the maximum amount of data (in bytes) writen to the filehandle per
+This is the maximum amount of data (in bytes) written to the filehandle per
 period. If C<upload_limit> is not specified, the upload rate is not limited.
 
 Note that this value can/will override C<read_size>.
@@ -251,6 +251,34 @@ Returns the amount of data read during the previous period.
 
 =back
 
+If you're using L<AnyEvent::Handle::Throttle|AnyEvent::Handle::Throttle> to
+limit bandwidth and realize you'd rather set flat limits on the B<total>
+bandwidth instead of per-handle, try these methods:
+
+=over
+
+=item AnyEvent::Handle::Throttle->B<global_upload_limit>( $bytes )
+
+Sets/returns the current global upload rate in bytes per period.
+
+=item AnyEvent::Handle::Throttle->B<global_download_limit>( $bytes )
+
+Sets/returns the current global download rate in bytes per period.
+
+=item $bytes = $handle->B<global_upload_speed>( )
+
+Returns the amount of data written through all
+L<AnyEvent::Handle::Throttle|AnyEvent::Handle::Throttle> objects during the
+previous period.
+
+=item $bytes = $handle->B<global_download_speed>( )
+
+Returns the amount of data read through all
+L<AnyEvent::Handle::Throttle|AnyEvent::Handle::Throttle> objects during the
+previous period.
+
+=back
+
 =head1 Notes
 
 =over
@@ -261,7 +289,7 @@ The current default period is C<1> second.
 
 =item *
 
-On destuction, all remaining data is sent ASAP, ignoring the user defined
+On destruction, all remaining data is sent ASAP, ignoring the user defined
 upload limit. This may change in the future.
 
 =back
