@@ -1,4 +1,10 @@
-Version 0.000002001 | 2010-06-17 01:36:39Z (Thu, 17 Jun 2010) | 4557fab
+Version 0.XXXXX | In the not too distant future | 6ee738a
+
+    Documentation/Sample Code/Test Suite:
+     * New tests:
+       - t/http_global.t tests global bandwidth limits
+
+Version 0.000002001 | 2010-06-17 01:39:49Z (Thu, 17 Jun 2010) | 6ee738a
 
      Resolved Issues/Bug Fixes:
      * Instead of allowing unlimited transfer, an undefined download_rate
