@@ -6,3 +6,5 @@ META.yml
 README
 t/http.t
 t/http_default.t
+t/http_global.t
+t/loopback.t
