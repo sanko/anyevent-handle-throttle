@@ -108,7 +108,7 @@ package AnyEvent::Handle::Throttle;
 
     sub _drain_wbuf {
         my ($self) = @_;
-        if (!$self->{_ww} && length $self->{wbuf}) {
+        if (!$self->{_ww} && $self->{wbuf} && length $self->{wbuf}) {
             Scalar::Util::weaken $self;
             my $cb;
             my $poll = sub {
