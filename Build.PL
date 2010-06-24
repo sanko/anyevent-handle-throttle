@@ -44,12 +44,19 @@ my $mb = $class->new(
         keywords =>
             [qw[AnyEvent Handle Throttle bandwidth limit cap throughput]],
         resources => {
-            bugtracker =>
-                'http://github.com/sanko/anyevent-handle-throttle/issues',
+            bugtracker => {
+                web =>
+                    'http://github.com/sanko/anyevent-handle-throttle/issues',
+                mailto => 'sanko@cpan.org'
+            },
+            repository => {
+                 url => 'git://github.com/sanko/anyevent-handle-throttle.git',
+                 web => 'http://github.com/sanko/anyevent-handle-throttle',
+                 type => 'git'
+            },
             ChangeLog =>
                 'http://github.com/sanko/anyevent-handle-throttle/commits/master',
-            license => 'http://www.perlfoundation.org/artistic_license_2_0',
-            repository => 'http://github.com/sanko/anyevent-handle-throttle'
+            license => ['http://www.perlfoundation.org/artistic_license_2_0']
         }
     }
 );

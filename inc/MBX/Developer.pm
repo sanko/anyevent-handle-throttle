@@ -132,6 +132,8 @@ END
                 $_Date;
             my $_Repo
                 = $self->{'properties'}{'meta_merge'}{'resources'}
+                {'repository'}{'web'}
+                || $self->{'properties'}{'meta_merge'}{'resources'}
                 {'repository'}
                 || '';
 

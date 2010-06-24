@@ -1,4 +1,4 @@
-Version 0.XXXXX | In the not too distant future | 978a987
+Version 0.XXXXX | In the not too distant future | 4c91a2a
 
     API Changes/Compatibility Information:
      * The entire API has changed.
@@ -6,10 +6,11 @@ Version 0.XXXXX | In the not too distant future | 978a987
            remained the same.
      * New global limits.
 
-    Documentation/Sample Code/Test Suite:
+    Documentation/Sample Code/Test Suite/Metadata:
      * New tests:
        - t/http_global.t tests global bandwidth limits
        - t/loopback.t fallback test when the http tests fail (system config?)
+     * (Hopefully) Updated bugtracker and repository metadata
 
     Notes:
      * Beijing!
