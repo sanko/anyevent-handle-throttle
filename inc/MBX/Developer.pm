@@ -134,6 +134,8 @@ END
                 = $self->{'properties'}{'meta_merge'}{'resources'}
                 {'repository'}{'web'}
                 || $self->{'properties'}{'meta_merge'}{'resources'}
+                {'repository'}{'url'}
+                || $self->{'properties'}{'meta_merge'}{'resources'}
                 {'repository'}
                 || '';
 
