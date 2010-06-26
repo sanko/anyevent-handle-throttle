@@ -40,7 +40,6 @@ my $mb = $class->new(
     no_index   => {directory => [qw[t example inc]]},
     test_files => \@tests,
     meta_merge => {
-        generated_by => 'Conversion, software version 7.0',
         keywords =>
             [qw[AnyEvent Handle Throttle bandwidth limit cap throughput]],
         resources => {

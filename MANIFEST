@@ -2,7 +2,7 @@ Build.PL
 Changes
 lib/AnyEvent/Handle/Throttle.pm
 MANIFEST			This list of files
-META.yml
+META.json
 README
 t/http.t
 t/http_default.t
