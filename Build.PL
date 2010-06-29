@@ -1,6 +1,5 @@
 use strict;
 use warnings;
-use Config qw[%Config];
 use File::Find qw[find];
 $|++;
 my $automated_testing = $ENV{AUTOMATED_TESTING} || $ENV{PERL_MM_USE_DEFAULT};
@@ -33,13 +32,10 @@ my $mb = $class->new(
                        perl            => 5.008000,
                        'Test::More'    => 0.88
     },
-    add_to_cleanup => [
-               qw[AnyEvent-Handle-Throttle-*],
-               map {"*$_"} ('.' . $Config{'so'}, $Config{'_o'}, $Config{'_a'})
-    ],
-    no_index   => {directory => [qw[t example inc]]},
-    test_files => \@tests,
-    meta_merge => {
+    add_to_cleanup => [qw[AnyEvent-Handle-Throttle-*]],
+    no_index       => {directory => [qw[t example inc]]},
+    test_files     => \@tests,
+    meta_merge     => {
         keywords =>
             [qw[AnyEvent Handle Throttle bandwidth limit cap throughput]],
         resources => {
@@ -70,12 +66,6 @@ $mb->notes(svn => $mb->dist_version =~ m[\.0?(\d{4})]);
 $mb->create_build_script;
 ##############################################################################
 exit 0;
-
-sub okay_tcp4 {
-    return 0 if not -f 't/90000_data/94000_scripts/94004_TCP4_loopback.pl';
-    system(qq["$^X" t/90000_data/94000_scripts/94004_TCP4_loopback.pl]);
-    return $? ? 0 : 1;
-}
 
 sub find_cb {
     return if -d $_ or -l $_;
