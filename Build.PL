@@ -23,6 +23,7 @@ my $mb = $class->new(
                  'Module::Build' => 0.36,
                  parent          => 0,
                  perl            => 5.008000,
+                 'Test::Class'   => 0.35,
                  'Test::More'    => 0.88
     },
     build_requires => {'AnyEvent'      => 0,
@@ -30,12 +31,18 @@ my $mb = $class->new(
                        'Module::Build' => 0.36,
                        parent          => 0,
                        perl            => 5.008000,
+                       'Test::Class'   => 0.35,
                        'Test::More'    => 0.88
     },
-    add_to_cleanup => [qw[AnyEvent-Handle-Throttle-*]],
-    no_index       => {directory => [qw[t example inc]]},
-    test_files     => \@tests,
-    meta_merge     => {
+    add_to_cleanup   => [qw[AnyEvent-Handle-Throttle-*]],
+    no_index         => {directory => [qw[t example inc]]},
+    test_files       => \@tests,
+    test_file_exts   => [qw[.t]],
+    use_tap_harness  => 1,
+    tap_harness_args => {jobs  => 9,
+                         rules => {par => [{seq => '/t/http*'}, '*']}
+    },
+    meta_merge => {
         keywords =>
             [qw[AnyEvent Handle Throttle bandwidth limit cap throughput]],
         resources => {
