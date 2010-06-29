@@ -1,7 +1,8 @@
-Version 0.XXXXX | In the not too distant future | edb30dd
+Version 0.XXXXX | In the not too distant future | 9f430b5
 
     Documentation/Sample Code/Test Suite/Metadata:
      * Moving to META.json
+     * http tests are run concurrently and without the protection of TODO
 
 Version 0.000002002 | 2010-06-24 03:04:03Z (Thu, 24 Jun 2010) | edb30dd
 

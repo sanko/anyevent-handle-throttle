@@ -10,7 +10,8 @@ my $condvar = AnyEvent->condvar;
 my ($prev, $chunks, $handle, $rbuf) = (AE::now, 0, undef, undef);
 my $req = "GET / HTTP/1.0\015\012\015\012";
 TODO: {
-    local $TODO = 'May fail blah blah blah';
+
+    #local $TODO = 'May fail blah blah blah';
     $handle = new_ok(
         'AnyEvent::Handle::Throttle',
         [connect    => ['cpan.org', 80],
