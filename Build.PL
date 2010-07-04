@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use File::Find qw[find];
 $|++;
+our $MAJOR = 0.00; our $MINOR = 2; our $DEV = -3; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
 my $automated_testing = $ENV{AUTOMATED_TESTING} || $ENV{PERL_MM_USE_DEFAULT};
 my $is_developer = ((-d '.git') ? 1 : 0) or ($ENV{RELEASE_TESTING} ? 1 : 0);
 my @tests;
@@ -17,6 +18,7 @@ my $mb = $class->new(
     module_name => 'AnyEvent::Handle::Throttle',
     license     => 'artistic_2',
     dist_author => 'Sanko Robinson <sanko@cpan.org>',
+    dist_version => $VERSION,
     requires    => {
                  'AnyEvent'      => 0,
                  'File::Find'    => 0,

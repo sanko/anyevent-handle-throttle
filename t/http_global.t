@@ -12,8 +12,7 @@ my $req = "GET / HTTP/1.0\015\012\015\012";
 AnyEvent::Handle::Throttle->global_upload_limit(5);
 AnyEvent::Handle::Throttle->global_download_limit(200);
 TODO: {
-
-    #local $TODO = 'May fail blah blah blah';
+    local $TODO = 'May fail blah blah blah';
     $handle = new_ok(
         'AnyEvent::Handle::Throttle',
         [connect    => ['cpan.org', 80],

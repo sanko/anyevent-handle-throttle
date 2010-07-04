@@ -1,8 +1,8 @@
-Version 0.XXXXX | In the not too distant future | 9f430b5
+Version 0.000002003 | 2010-07-04 01:46:43Z (Sun, 04 Jul 2010) | 57556f8
 
     Documentation/Sample Code/Test Suite/Metadata:
      * Moving to META.json
-     * http tests are run concurrently and without the protection of TODO
+     * Network based (HTTP) tests are run concurrently to avoid save time
 
 Version 0.000002002 | 2010-06-24 03:04:03Z (Thu, 24 Jun 2010) | edb30dd
 
