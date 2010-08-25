@@ -32,7 +32,7 @@ my $rd_ae = AnyEvent::Handle::Throttle->new(
             is $this_read, 1024,
                 sprintf 'Read %s more bytes into rbuf (%d bytes total)',
                 $this_read, length $h->rbuf;
-            diag sprintf '...%fs later', AE::now- $now;
+            note sprintf '...%fs later', AE::now- $now;
             $now = AE::now;
             $len = length $h->rbuf;
         }
@@ -44,7 +44,7 @@ my $rd_ae = AnyEvent::Handle::Throttle->new(
                     $dat = substr $data, 0, 2;
                     $dat .= substr $data, -5;
                     is(++$read, 1, 'first read chunk');
-                    diag sprintf '...%fs later', AE::now- $now;
+                    note sprintf '...%fs later', AE::now- $now;
                     $now = AE::now;
                     my $n = 5;
                     $wr_ae->push_write('A' x 5000);
@@ -59,7 +59,7 @@ my $rd_ae = AnyEvent::Handle::Throttle->new(
                         chunk => 5000,
                         sub {
                             is(++$read, 2, 'second read chunk');
-                            diag sprintf '...%fs later', AE::now- $now;
+                            note sprintf '...%fs later', AE::now- $now;
                             $now = AE::now;
                             $cv->broadcast;
                         }

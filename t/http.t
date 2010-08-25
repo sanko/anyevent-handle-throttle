@@ -19,7 +19,7 @@ TODO: {
          on_prepare     => sub {15},
          on_connect     => sub { $prev = AE::now; },
          on_error       => sub {
-             diag 'error ' . $_[2];
+             note 'error ' . $_[2];
              $_[0]->destroy;
              $condvar->send;
          },
@@ -33,7 +33,7 @@ TODO: {
              my $expected
                  = (int(length($req) / $handle->upload_limit)
                         * $handle->{_period});
-             diag
+             note
                  sprintf 'Write queue is empty after %f seconds',
                  $now - $prev;
              $prev = $now;
@@ -43,7 +43,7 @@ TODO: {
              ok length $handle->rbuf <= $handle->download_limit,
                  sprintf 'Chunk %d was %d bytes long...', ++$chunks,
                  length $handle->rbuf;
-             diag sprintf ' ...and came %f seconds later', $now - $prev
+             note sprintf ' ...and came %f seconds later', $now - $prev
                  if $chunks > 1;
              $handle->rbuf() = '';
              $prev = $now;

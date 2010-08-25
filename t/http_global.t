@@ -19,7 +19,7 @@ TODO: {
          on_prepare => sub          {15},
          on_connect => sub { $prev = AE::now; },
          on_error => sub {
-             diag 'error ' . $_[2];
+             note 'error ' . $_[2];
              $_[0]->destroy;
              $condvar->send;
          },
@@ -35,7 +35,7 @@ TODO: {
                              / AnyEvent::Handle::Throttle->global_upload_limit
                      )
              );
-             diag sprintf 'Write queue is empty after %f seconds',
+             note sprintf 'Write queue is empty after %f seconds',
                  $now - $prev;
              $prev = $now;
          },
@@ -45,7 +45,7 @@ TODO: {
                  <= AnyEvent::Handle::Throttle->global_download_limit,
                  sprintf 'Chunk %d was %d bytes long...', ++$chunks,
                  length $handle->rbuf;
-             diag sprintf ' ...and came %f seconds later', $now - $prev
+             note sprintf ' ...and came %f seconds later', $now - $prev
                  if $chunks > 1;
              $handle->rbuf() = '';
              $prev = $now;

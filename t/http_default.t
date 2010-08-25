@@ -17,7 +17,7 @@ TODO: {
          on_prepare => sub          {15},
          on_connect => sub { $prev = AE::now; },
          on_error => sub {
-             diag 'error ' . $_[2];
+             note 'error ' . $_[2];
              $_[0]->destroy;
              $condvar->send;
          },
@@ -29,7 +29,7 @@ TODO: {
          on_drain => sub {
              my $now      = AE::now;
              my $expected = int(length($req));
-             diag sprintf 'Write queue is empty after %f seconds',
+             note sprintf 'Write queue is empty after %f seconds',
                  $now - $prev;
              $prev = $now;
          },
