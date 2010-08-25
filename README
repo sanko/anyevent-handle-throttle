@@ -8,8 +8,8 @@ Synopsis
         my $condvar = AnyEvent->condvar;
         my $handle;
         $handle = AnyEvent::Handle::Throttle->new(
-            upload_rate   => 2,  # Very...
-            download_rate => 50, # ...slow
+            upload_limit   => 2,  # Very...
+            download_limit => 50, # ...slow
             connect  => ['google.com', 'http'],
             on_error => sub {
                 warn "error $_[2]\n";
@@ -46,39 +46,73 @@ Methods
         )", this constructor supports these arguments (all as "key => value"
         pairs).
 
-        upload_rate => <bytes>
-            This is the maximum amount of data (in bytes) writen to the
-            filehandle per period. If "upload_rate" is not specified, the
+        upload_limit => <bytes>
+            This is the maximum amount of data (in bytes) written to the
+            filehandle per period. If "upload_limit" is not specified, the
             upload rate is not limited.
 
             Note that this value can/will override "read_size".
 
-        download_rate => <bytes>
+        download_limit => <bytes>
             This is the maximum amount of data (in bytes) read from the
-            filehandle per period. If "download_rate" is not specified, the
+            filehandle per period. If "download_limit" is not specified, the
             upload rate is not limited.
 
-    $handle->upload_rate( $bytes )
+    $handle->upload_limit( $bytes )
         Sets/returns the current upload rate in bytes per period.
 
-    $handle->download_rate( $bytes )
+    $handle->download_limit( $bytes )
         Sets/returns the current download rate in bytes per period.
 
-    $bytes = $handle->upload_period( )
+    $bytes = $handle->upload_speed( )
         Returns the amount of data written during the previous period.
 
-    $bytes = $handle->download_period( )
+    $bytes = $handle->download_speed( )
         Returns the amount of data read during the previous period.
+
+    If you're using AnyEvent::Handle::Throttle to limit bandwidth and
+    realize you'd rather set flat limits on the total bandwidth instead of
+    per-handle, try these methods:
+
+    AnyEvent::Handle::Throttle->global_upload_limit( $bytes )
+        Sets/returns the current global upload rate in bytes per period.
+
+    AnyEvent::Handle::Throttle->global_download_limit( $bytes )
+        Sets/returns the current global download rate in bytes per period.
+
+    $bytes = $handle->global_upload_speed( )
+        Returns the amount of data written through all
+        AnyEvent::Handle::Throttle objects during the previous period.
+
+    $bytes = $handle->global_download_speed( )
+        Returns the amount of data read through all
+        AnyEvent::Handle::Throttle objects during the previous period.
+
+    $bytes = $handle->download_total( )
+        Returns the total amount of data read through the
+        AnyEvent::Handle::Throttle object.
+
+    $bytes = $handle->upload_total( )
+        Returns the total amount of data written through the
+        AnyEvent::Handle::Throttle object.
+
+    $bytes = $handle->global_download_total( )
+        Returns the total amount of data read through all
+        AnyEvent::Handle::Throttle objects so far.
+
+    $bytes = $handle->global_upload_total( )
+        Returns the total amount of data sent through all
+        AnyEvent::Handle::Throttle objects so far.
 
 Notes
     *   The current default period is 1 second.
 
-    *   On destuction, all remaining data is sent ASAP, ignoring the user
+    *   On destruction, all remaining data is sent ASAP, ignoring the user
         defined upload limit. This may change in the future.
 
 Bugs
-    I'm sure this module is just burting with 'em. When you stumble upon one,
-    please report it via the Issue Tracker
+    I'm sure this module is just burting with 'em. When you stumble upon
+    one, please report it via the Issue Tracker
     <http://github.com/sanko/anyevent-handle-throttle/issues>.
 
 Author

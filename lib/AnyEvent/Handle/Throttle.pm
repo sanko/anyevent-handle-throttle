@@ -6,7 +6,7 @@ package AnyEvent::Handle::Throttle;
     use Errno qw[EAGAIN EINTR];
     use AnyEvent::Util qw[WSAEWOULDBLOCK];
     use parent 'AnyEvent::Handle';
-    our $MAJOR = 0.00; our $MINOR = 2; our $DEV = 4; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
+    our $MAJOR = 0.00; our $MINOR = 2; our $DEV = -4; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
 
     sub upload_limit {
         $_[1] ? $_[0]->{upload_limit} = $_[1] : $_[0]->{upload_limit};
@@ -15,10 +15,14 @@ package AnyEvent::Handle::Throttle;
     sub download_limit {
         $_[1] ? $_[0]->{download_limit} = $_[1] : $_[0]->{download_limit};
     }
+    sub upload_total   { $_[0]->{upload_total} }
+    sub download_total { $_[0]->{download_total} }
     sub upload_speed   { $_[0]->{upload_speed} }
     sub download_speed { $_[0]->{download_speed} }
-    my ($global_upload_limit, $global_download_limit,
-        $global_upload_speed, $global_download_speed);
+    my ($global_upload_total, $global_download_total,
+        $global_upload_limit, $global_download_limit,
+        $global_upload_speed, $global_download_speed
+    );
     my $global_period = 1;
 
     sub global_upload_limit {
@@ -28,6 +32,8 @@ package AnyEvent::Handle::Throttle;
     sub global_download_limit {
         $_[1] ? $global_download_limit = $_[1] : $global_download_limit;
     }
+    sub global_upload_total   {$global_upload_total}
+    sub global_download_total {$global_download_total}
     sub global_upload_speed   {$global_upload_speed}
     sub global_download_speed {$global_download_speed}
     my ($global_read_size,     $global_write_size,
@@ -80,9 +86,11 @@ package AnyEvent::Handle::Throttle;
                 $$rbuf ||= '';
                 my $len = sysread $self->{fh}, $$rbuf, $read || 8192,
                     length $$rbuf;
-                if (defined $len && $len > 0) {
+                if ($len > 0) {
                     $self->{read_size} -= $len;
                     $global_read_size  -= $len;
+                    $self->{download_total}  += $len;
+                    $global_download_total   += $len;
                     $self->{_download_speed} += $len;
                     $global__download_speed  += $len;
                     $self->{_activity} = $self->{_ractivity} = AE::now;
@@ -137,6 +145,8 @@ package AnyEvent::Handle::Throttle;
                 if (defined $len) {
                     $self->{write_size} -= $len;
                     $global_write_size  -= $len;
+                    $self->{upload_total}  += $len;
+                    $global_upload_total   += $len;
                     $self->{_upload_speed} += $len;
                     $global__upload_speed  += $len;
                     substr $self->{wbuf}, 0, $len, "";
@@ -276,6 +286,26 @@ previous period.
 Returns the amount of data read through all
 L<AnyEvent::Handle::Throttle|AnyEvent::Handle::Throttle> objects during the
 previous period.
+
+=item $bytes = $handle->B<download_total>( )
+
+Returns the total amount of data read through the
+L<AnyEvent::Handle::Throttle|AnyEvent::Handle::Throttle> object.
+
+=item $bytes = $handle->B<upload_total>( )
+
+Returns the total amount of data written through the
+L<AnyEvent::Handle::Throttle|AnyEvent::Handle::Throttle> object.
+
+=item $bytes = $handle->B<global_download_total>( )
+
+Returns the total amount of data read through all
+L<AnyEvent::Handle::Throttle|AnyEvent::Handle::Throttle> objects so far.
+
+=item $bytes = $handle->B<global_upload_total>( )
+
+Returns the total amount of data sent through all
+L<AnyEvent::Handle::Throttle|AnyEvent::Handle::Throttle> objects so far.
 
 =back
 

@@ -1,4 +1,9 @@
-Version 0.000002003 | 2010-07-04 01:46:43Z (Sun, 04 Jul 2010) | 57556f8
+Version 0.000002004 | 2010-08-25 18:10:39Z (Wed, 25 Aug 2010) | f6b7de5
+
+    API Changes/Compatibility Information:
+     * Adding methods for global and per-object download totals
+
+Version 0.000002003 | 2010-07-04 01:48:52Z (Sun, 04 Jul 2010) | d908b81
 
     Documentation/Sample Code/Test Suite/Metadata:
      * Moving to META.json

@@ -97,5 +97,20 @@ $wr_ae->on_drain(
     }
 );
 $cv->recv;
-ok($dat eq 'AAXXXYZ', 'received data') || diag '$dat was: ' . $dat;
+ok($dat eq 'AAXXXYZ', 'received data') || note '$dat was: ' . $dat;
+
+#
+ok !$rd_ae->upload_total, 'reader uploaded nothing';
+is $rd_ae->global_upload_total, 10132, 'reader says uploaded is 10132 bytes';
+is $rd_ae->download_total, 10132,
+    'reader claims to have downloaded 10132 bytes';
+is $rd_ae->global_download_total, 10132,
+    'reader claims global download was 10132 bytes';
+is $wr_ae->upload_total,        10132, 'writer says it uploaded 10132 bytes';
+is $wr_ae->global_upload_total, 10132, 'writer says uploaded is 10132 bytes';
+ok !$wr_ae->download_total, 'writer claims to have downloaded nothing';
+is $wr_ae->global_download_total, 10132,
+    'writer claims global download was 10132 bytes';
+
+#
 done_testing;
