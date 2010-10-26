@@ -1,4 +1,9 @@
-Version 0.000002004 | 2010-08-25 18:10:39Z (Wed, 25 Aug 2010) | f6b7de5
+Version 0.000002004 | 2010-08-25 18:16:33Z (Wed, 25 Aug 2010) | bc1ea36
+
+    Internal/Behavioral Changes:
+     * Correctly deal with errors when calling sysread( ... )
+
+Version 0.000002004 | 2010-08-25 18:16:33Z (Wed, 25 Aug 2010) | bc1ea36
 
     API Changes/Compatibility Information:
      * Adding methods for global and per-object download totals
@@ -45,7 +50,7 @@ Version 0.000001 | 2010-06-15 00:31:17Z (Tue, 15 Jun 2010) | 8b45623
     API Changes/Compatibility Information:
      * It actually exists
 
-     Resolved Issues/Bug Fixes:
+    Resolved Issues/Bug Fixes:
      * ...see above
 
     Internal/Behavioral Changes:

@@ -6,7 +6,7 @@ package AnyEvent::Handle::Throttle;
     use Errno qw[EAGAIN EINTR];
     use AnyEvent::Util qw[WSAEWOULDBLOCK];
     use parent 'AnyEvent::Handle';
-    our $MAJOR = 0.00; our $MINOR = 2; our $DEV = -4; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
+    our $MAJOR = 0.00; our $MINOR = 2; our $DEV = -5; our $VERSION = sprintf('%1.3f%03d' . ($DEV ? (($DEV < 0 ? '' : '_') . '%03d') : ('')), $MAJOR, $MINOR, abs $DEV);
 
     sub upload_limit {
         $_[1] ? $_[0]->{upload_limit} = $_[1] : $_[0]->{upload_limit};
@@ -86,31 +86,35 @@ package AnyEvent::Handle::Throttle;
                 $$rbuf ||= '';
                 my $len = sysread $self->{fh}, $$rbuf, $read || 8192,
                     length $$rbuf;
-                if ($len > 0) {
-                    $self->{read_size} -= $len;
-                    $global_read_size  -= $len;
-                    $self->{download_total}  += $len;
-                    $global_download_total   += $len;
-                    $self->{_download_speed} += $len;
-                    $global__download_speed  += $len;
-                    $self->{_activity} = $self->{_ractivity} = AE::now;
-                    if ($self->{tls}) {
-                        Net::SSLeay::BIO_write($self->{_rbio}, $$rbuf);
-                        &_dotls($self);
+                if (defined $len) {
+                    if ($len > 0) {
+                        $self->{read_size} -= $len;
+                        $global_read_size  -= $len;
+                        $self->{download_total}  += $len;
+                        $global_download_total   += $len;
+                        $self->{_download_speed} += $len;
+                        $global__download_speed  += $len;
+                        $self->{_activity} = $self->{_ractivity} = AE::now;
+                        if ($self->{tls}) {
+                            Net::SSLeay::BIO_write($self->{_rbio}, $$rbuf);
+                            &_dotls($self);
+                        }
+                        else {
+                            $self->_drain_rbuf;
+                        }
                     }
                     else {
+                        delete $self->{_rw};
+                        $self->{_eof} = 1;
                         $self->_drain_rbuf;
                     }
                 }
-                elsif (defined $len) {
-                    delete $self->{_rw};
-                    $self->{_eof} = 1;
-                    $self->_drain_rbuf;
+                elsif (   $! != EAGAIN
+                       && $! != EINTR
+                       && $! != WSAEWOULDBLOCK)
+                {   return $self->_error($!, 1);
                 }
-                elsif ($! != EAGAIN && $! != EINTR && $! != WSAEWOULDBLOCK) {
-                    return $self->_error($!, 1);
                 }
-            };
         }
     }
 
@@ -158,8 +162,10 @@ package AnyEvent::Handle::Throttle;
                             && $self->{on_drain};
                     delete $self->{_ww} unless length $self->{wbuf};
                 }
-                elsif ($! != EAGAIN && $! != EINTR && $! != WSAEWOULDBLOCK) {
-                    $self->_error($!, 1);
+                elsif (   $! != EAGAIN
+                       && $! != EINTR
+                       && $! != WSAEWOULDBLOCK)
+                {   $self->_error($!, 1);
                 }
             };
 
